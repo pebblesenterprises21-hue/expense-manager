@@ -90,4 +90,1606 @@ select {
   font-size: 12px;
 }
 
-.summary-card
+.summary-card strong {
+  display: block;
+  margin-top: 7px;
+  font-size: 18px;
+}
+
+.income {
+  color: #16a34a;
+}
+
+.expenses {
+  color: #dc2626;
+}
+
+.balance {
+  color: #4f46e5;
+}
+
+/* BOX */
+
+.box {
+  background: white;
+  border-radius: 16px;
+  padding: 18px;
+  margin-bottom: 15px;
+  box-shadow: 0 3px 12px rgba(0,0,0,.06);
+}
+
+.box h2 {
+  margin-top: 0;
+  font-size: 19px;
+}
+
+/* CUMULATIVE BAR */
+
+.bar-container {
+  height: 48px;
+  width: 100%;
+  display: flex;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #e5e7eb;
+  margin: 18px 0 15px;
+}
+
+.bar-segment {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 10px;
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  transition: width .4s;
+}
+
+.balance-segment {
+  background: #e5e7eb;
+  color: #555;
+}
+
+/* CATEGORY */
+
+.category {
+  background: #fafafa;
+  border-radius: 12px;
+  padding: 13px;
+  margin-bottom: 9px;
+  cursor: pointer;
+  border: 1px solid #eee;
+  transition: .15s;
+}
+
+.category:active {
+  transform: scale(.98);
+}
+
+.category-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.category-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.category-icon {
+  font-size: 25px;
+}
+
+.category-name {
+  font-weight: bold;
+}
+
+.category-amount {
+  font-weight: bold;
+  color: #333;
+}
+
+.category-bottom {
+  height: 7px;
+  background: #e5e7eb;
+  border-radius: 10px;
+  margin-top: 9px;
+  overflow: hidden;
+}
+
+.category-fill {
+  height: 100%;
+  border-radius: 10px;
+}
+
+/* ADD BUTTON */
+
+.add-button {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  background: #4f46e5;
+  color: white;
+  border: none;
+  font-size: 30px;
+  box-shadow: 0 5px 18px rgba(0,0,0,.25);
+  cursor: pointer;
+  z-index: 20;
+}
+
+/* MODAL */
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 100;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,.45);
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.modal-content {
+  background: white;
+  max-width: 600px;
+  margin: 40px auto;
+  border-radius: 18px;
+  padding: 20px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 12px;
+  margin-bottom: 10px;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 21px;
+}
+
+.close {
+  border: none;
+  background: #eee;
+  color: #333;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  margin: 0;
+  padding: 0;
+  font-size: 22px;
+}
+
+.detail-item {
+  padding: 14px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.detail-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.detail-date {
+  color: #777;
+  font-size: 13px;
+  margin-top: 5px;
+}
+
+.detail-note {
+  margin-top: 4px;
+  color: #555;
+}
+
+.detail-amount {
+  color: #dc2626;
+  font-weight: bold;
+}
+
+.delete-small {
+  width: auto;
+  padding: 6px 10px;
+  margin-top: 8px;
+  background: #fee2e2;
+  color: #dc2626;
+  font-size: 12px;
+}
+
+.modal-total {
+  text-align: right;
+  font-size: 19px;
+  font-weight: bold;
+  margin-top: 15px;
+}
+
+.empty {
+  text-align: center;
+  color: #888;
+  padding: 25px 5px;
+}
+
+/* ADD EXPENSE FORM */
+
+.form-group {
+  margin-bottom: 12px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.save-button {
+  background: #4f46e5;
+}
+
+.income-button {
+  background: #16a34a;
+}
+
+/* MOBILE */
+
+@media(max-width:600px) {
+
+  .summary {
+    grid-template-columns: 1fr;
+  }
+
+  .summary-card {
+    padding: 13px;
+  }
+
+  .summary-card strong {
+    font-size: 21px;
+  }
+
+  .modal {
+    padding: 10px;
+  }
+
+  .modal-content {
+    margin: 20px auto;
+  }
+}
+</style>
+</head>
+
+
+<body>
+
+<header>
+  <h1>💰 My Monthly Expenses</h1>
+  <p id="monthTitle"></p>
+</header>
+
+
+<div class="container">
+
+  <!-- MONTH -->
+
+  <div class="month-box">
+
+    <label>Select Month</label>
+
+    <input
+      type="month"
+      id="monthPicker"
+    >
+
+  </div>
+
+
+  <!-- SUMMARY -->
+
+  <div class="summary">
+
+    <div class="summary-card">
+
+      <small>Income</small>
+
+      <strong
+        class="income"
+        id="incomeDisplay">
+        ₹0
+      </strong>
+
+    </div>
+
+
+    <div class="summary-card">
+
+      <small>Expenses</small>
+
+      <strong
+        class="expenses"
+        id="expenseDisplay">
+        ₹0
+      </strong>
+
+    </div>
+
+
+    <div class="summary-card">
+
+      <small>Balance</small>
+
+      <strong
+        class="balance"
+        id="balanceDisplay">
+        ₹0
+      </strong>
+
+    </div>
+
+  </div>
+
+
+  <!-- INCOME -->
+
+  <div class="box">
+
+    <h2>💰 Monthly Income</h2>
+
+    <div class="form-group">
+
+      <label>Income</label>
+
+      <input
+        type="number"
+        id="incomeInput"
+        placeholder="Example: 50000"
+        min="0"
+      >
+
+    </div>
+
+    <button
+      class="income-button"
+      onclick="saveIncome()">
+
+      Save Monthly Income
+
+    </button>
+
+  </div>
+
+
+  <!-- EXPENSE OVERVIEW -->
+
+  <div class="box">
+
+    <h2>📊 Expense Overview</h2>
+
+    <p style="font-size:13px;color:#777;">
+      Your expenses are shown cumulatively against your monthly income.
+    </p>
+
+
+    <div
+      class="bar-container"
+      id="cumulativeBar">
+    </div>
+
+
+    <div
+      id="barMessage"
+      style="font-size:13px;color:#777;text-align:center;">
+    </div>
+
+  </div>
+
+
+  <!-- CATEGORIES -->
+
+  <div class="box">
+
+    <h2>📋 Categories</h2>
+
+    <p style="font-size:13px;color:#777;">
+      Tap a category to see its expenses.
+    </p>
+
+
+    <div id="categoryList"></div>
+
+  </div>
+
+</div>
+
+
+<!-- ADD BUTTON -->
+
+<button
+  class="add-button"
+  onclick="openAddExpense()">
+
+  +
+
+</button>
+
+
+<!-- ADD EXPENSE MODAL -->
+
+<div
+  class="modal"
+  id="addModal">
+
+  <div class="modal-content">
+
+    <div class="modal-header">
+
+      <h2>➕ Add Expense</h2>
+
+      <button
+        class="close"
+        onclick="closeAddExpense()">
+
+        ×
+
+      </button>
+
+    </div>
+
+
+    <div class="form-group">
+
+      <label>Date</label>
+
+      <input
+        type="date"
+        id="expenseDate"
+      >
+
+    </div>
+
+
+    <div class="form-group">
+
+      <label>Category</label>
+
+      <select id="category">
+
+        <option value="Grocery">
+          🛒 Grocery
+        </option>
+
+        <option value="Vegetable">
+          🥬 Vegetable
+        </option>
+
+        <option value="Fruits">
+          🍎 Fruits
+        </option>
+
+        <option value="Milk">
+          🥛 Milk
+        </option>
+
+        <option value="Non-Veg">
+          🍗 Non-Veg
+        </option>
+
+        <option value="Snacks">
+          🍪 Snacks
+        </option>
+
+        <option value="Cable">
+          📺 Cable
+        </option>
+
+        <option value="Gas">
+          🔥 Gas
+        </option>
+
+        <option value="Others">
+          📦 Others
+        </option>
+
+      </select>
+
+    </div>
+
+
+    <div class="form-group">
+
+      <label>Amount</label>
+
+      <input
+        type="number"
+        id="amount"
+        placeholder="Enter amount"
+        min="1"
+      >
+
+    </div>
+
+
+    <div class="form-group">
+
+      <label>Description</label>
+
+      <input
+        type="text"
+        id="note"
+        placeholder="Example: Rice, Haircut, Milk..."
+      >
+
+    </div>
+
+
+    <button
+      class="save-button"
+      onclick="addExpense()">
+
+      💾 Save Expense
+
+    </button>
+
+  </div>
+
+</div>
+
+
+<!-- CATEGORY DETAILS MODAL -->
+
+<div
+  class="modal"
+  id="detailsModal">
+
+  <div class="modal-content">
+
+    <div class="modal-header">
+
+      <h2 id="detailsTitle">
+        Category
+      </h2>
+
+      <button
+        class="close"
+        onclick="closeDetails()">
+
+        ×
+
+      </button>
+
+    </div>
+
+
+    <div id="detailsList"></div>
+
+
+    <div
+      class="modal-total"
+      id="detailsTotal">
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+/* ==========================================
+   DATA
+========================================== */
+
+let expenses =
+  JSON.parse(
+    localStorage.getItem("myExpenses")
+  ) || [];
+
+
+let incomes =
+  JSON.parse(
+    localStorage.getItem("myIncomes")
+  ) || {};
+
+
+/* ==========================================
+   CATEGORIES
+========================================== */
+
+const categories = [
+
+  "Grocery",
+  "Vegetable",
+  "Fruits",
+  "Milk",
+  "Non-Veg",
+  "Snacks",
+  "Cable",
+  "Gas",
+  "Others"
+
+];
+
+
+/* ==========================================
+   ICONS
+========================================== */
+
+const icons = {
+
+  Grocery: "🛒",
+  Vegetable: "🥬",
+  Fruits: "🍎",
+  Milk: "🥛",
+  "Non-Veg": "🍗",
+  Snacks: "🍪",
+  Cable: "📺",
+  Gas: "🔥",
+  Others: "📦"
+
+};
+
+
+/* ==========================================
+   COLORS
+========================================== */
+
+const colors = {
+
+  Grocery: "#4f46e5",
+  Vegetable: "#16a34a",
+  Fruits: "#f59e0b",
+  Milk: "#06b6d4",
+  "Non-Veg": "#dc2626",
+  Snacks: "#db2777",
+  Cable: "#7c3aed",
+  Gas: "#ea580c",
+  Others: "#64748b"
+
+};
+
+
+/* ==========================================
+   DATE
+========================================== */
+
+const now = new Date();
+
+const today =
+  now.toISOString().split("T")[0];
+
+const thisMonth =
+  now.toISOString().slice(0,7);
+
+
+document.getElementById(
+  "expenseDate"
+).value = today;
+
+
+document.getElementById(
+  "monthPicker"
+).value = thisMonth;
+
+
+/* ==========================================
+   INITIAL SCREEN
+========================================== */
+
+updateScreen();
+
+
+/* ==========================================
+   SAVE INCOME
+========================================== */
+
+function saveIncome() {
+
+  const month =
+    document.getElementById(
+      "monthPicker"
+    ).value;
+
+  const amount =
+    Number(
+      document.getElementById(
+        "incomeInput"
+      ).value
+    );
+
+
+  if (!month) {
+
+    alert("Please select a month.");
+
+    return;
+
+  }
+
+
+  if (amount < 0 || isNaN(amount)) {
+
+    alert("Enter a valid income.");
+
+    return;
+
+  }
+
+
+  incomes[month] = amount;
+
+
+  localStorage.setItem(
+    "myIncomes",
+    JSON.stringify(incomes)
+  );
+
+
+  updateScreen();
+
+}
+
+
+/* ==========================================
+   ADD EXPENSE
+========================================== */
+
+function addExpense() {
+
+  const date =
+    document.getElementById(
+      "expenseDate"
+    ).value;
+
+
+  const category =
+    document.getElementById(
+      "category"
+    ).value;
+
+
+  const amount =
+    Number(
+      document.getElementById(
+        "amount"
+      ).value
+    );
+
+
+  const note =
+    document.getElementById(
+      "note"
+    ).value.trim();
+
+
+  if (!date) {
+
+    alert("Please select a date.");
+
+    return;
+
+  }
+
+
+  if (!amount || amount <= 0) {
+
+    alert("Please enter a valid amount.");
+
+    return;
+
+  }
+
+
+  const expense = {
+
+    id: Date.now(),
+
+    date: date,
+
+    category: category,
+
+    amount: amount,
+
+    note: note || "-"
+
+  };
+
+
+  expenses.push(expense);
+
+
+  localStorage.setItem(
+    "myExpenses",
+    JSON.stringify(expenses)
+  );
+
+
+  document.getElementById(
+    "amount"
+  ).value = "";
+
+
+  document.getElementById(
+    "note"
+  ).value = "";
+
+
+  closeAddExpense();
+
+  updateScreen();
+
+}
+
+
+/* ==========================================
+   UPDATE SCREEN
+========================================== */
+
+function updateScreen() {
+
+  const month =
+    document.getElementById(
+      "monthPicker"
+    ).value;
+
+
+  if (!month) return;
+
+
+  updateMonthTitle(month);
+
+
+  const monthExpenses =
+    expenses.filter(
+      item =>
+        item.date.startsWith(month)
+    );
+
+
+  const totalExpenses =
+    monthExpenses.reduce(
+      (sum,item) =>
+        sum + item.amount,
+      0
+    );
+
+
+  const income =
+    Number(
+      incomes[month] || 0
+    );
+
+
+  const balance =
+    income - totalExpenses;
+
+
+  document.getElementById(
+    "incomeDisplay"
+  ).innerText =
+    money(income);
+
+
+  document.getElementById(
+    "expenseDisplay"
+  ).innerText =
+    money(totalExpenses);
+
+
+  document.getElementById(
+    "balanceDisplay"
+  ).innerText =
+    money(balance);
+
+
+  const balanceElement =
+    document.getElementById(
+      "balanceDisplay"
+    );
+
+
+  balanceElement.style.color =
+    balance < 0
+      ? "#dc2626"
+      : "#4f46e5";
+
+
+  document.getElementById(
+    "incomeInput"
+  ).value =
+    income || "";
+
+
+  showChart(
+    monthExpenses,
+    income,
+    totalExpenses
+  );
+
+
+  showCategories(
+    monthExpenses
+  );
+
+}
+
+
+/* ==========================================
+   MONTH TITLE
+========================================== */
+
+function updateMonthTitle(month) {
+
+  const date =
+    new Date(
+      month + "-01"
+    );
+
+
+  document.getElementById(
+    "monthTitle"
+  ).innerText =
+    date.toLocaleDateString(
+      "en-IN",
+      {
+        month: "long",
+        year: "numeric"
+      }
+    );
+
+}
+
+
+/* ==========================================
+   CHART
+========================================== */
+
+function showChart(
+  monthExpenses,
+  income,
+  totalExpenses
+) {
+
+  const bar =
+    document.getElementById(
+      "cumulativeBar"
+    );
+
+
+  const message =
+    document.getElementById(
+      "barMessage"
+    );
+
+
+  bar.innerHTML = "";
+
+
+  const totals = {};
+
+
+  categories.forEach(category => {
+
+    totals[category] =
+      monthExpenses
+
+        .filter(
+          item =>
+            item.category === category
+        )
+
+        .reduce(
+          (sum,item) =>
+            sum + item.amount,
+          0
+        );
+
+  });
+
+
+  const base =
+    income > 0
+      ? income
+      : totalExpenses;
+
+
+  if (base === 0) {
+
+    message.innerText =
+      "Add your income and expenses to see the overview.";
+
+    return;
+
+  }
+
+
+  let usedPercentage = 0;
+
+
+  categories.forEach(category => {
+
+    const amount =
+      totals[category];
+
+
+    if (amount <= 0) return;
+
+
+    let percentage =
+      (amount / base) * 100;
+
+
+    /*
+      If spending is more than income,
+      the bar cannot exceed 100%.
+    */
+
+    if (usedPercentage >= 100) return;
+
+
+    if (
+      usedPercentage + percentage >
+      100
+    ) {
+
+      percentage =
+        100 - usedPercentage;
+
+    }
+
+
+    const segment =
+      document.createElement(
+        "div"
+      );
+
+
+    segment.className =
+      "bar-segment";
+
+
+    segment.style.width =
+      percentage + "%";
+
+
+    segment.style.background =
+      colors[category];
+
+
+    if (percentage >= 8) {
+
+      segment.innerText =
+        icons[category];
+
+    }
+
+
+    bar.appendChild(
+      segment
+    );
+
+
+    usedPercentage +=
+      percentage;
+
+  });
+
+
+  /*
+    Show remaining balance
+  */
+
+  if (
+    income > totalExpenses
+  ) {
+
+    const remaining =
+      income - totalExpenses;
+
+
+    const percentage =
+      (remaining / income) * 100;
+
+
+    const segment =
+      document.createElement(
+        "div"
+      );
+
+
+    segment.className =
+      "bar-segment balance-segment";
+
+
+    segment.style.width =
+      percentage + "%";
+
+
+    if (percentage > 12) {
+
+      segment.innerText =
+        "Balance";
+
+    }
+
+
+    bar.appendChild(
+      segment
+    );
+
+
+    message.innerText =
+      "Spent " +
+      money(totalExpenses) +
+      " • Balance " +
+      money(remaining);
+
+  } else {
+
+    message.innerText =
+      "Expenses have reached or exceeded your income.";
+
+  }
+
+}
+
+
+/* ==========================================
+   CATEGORY LIST
+========================================== */
+
+function showCategories(
+  monthExpenses
+) {
+
+  const container =
+    document.getElementById(
+      "categoryList"
+    );
+
+
+  const totals = {};
+
+
+  categories.forEach(category => {
+
+    totals[category] =
+      monthExpenses
+
+        .filter(
+          item =>
+            item.category === category
+        )
+
+        .reduce(
+          (sum,item) =>
+            sum + item.amount,
+          0
+        );
+
+  });
+
+
+  const highest =
+    Math.max(
+      ...Object.values(totals),
+      1
+    );
+
+
+  let html = "";
+
+
+  categories.forEach(category => {
+
+    const amount =
+      totals[category];
+
+
+    const width =
+      (amount / highest) * 100;
+
+
+    html += `
+
+      <div
+        class="category"
+        onclick="openDetails('${category}')">
+
+        <div class="category-top">
+
+          <div class="category-left">
+
+            <span class="category-icon">
+              ${icons[category]}
+            </span>
+
+            <span class="category-name">
+              ${category}
+            </span>
+
+          </div>
+
+
+          <span class="category-amount">
+            ${money(amount)}
+          </span>
+
+        </div>
+
+
+        <div class="category-bottom">
+
+          <div
+            class="category-fill"
+            style="
+              width:${width}%;
+              background:${colors[category]};
+            ">
+          </div>
+
+        </div>
+
+      </div>
+
+    `;
+
+  });
+
+
+  container.innerHTML =
+    html;
+
+}
+
+
+/* ==========================================
+   OPEN CATEGORY DETAILS
+========================================== */
+
+function openDetails(
+  category
+) {
+
+  const month =
+    document.getElementById(
+      "monthPicker"
+    ).value;
+
+
+  const items =
+    expenses
+
+      .filter(
+        item =>
+          item.date.startsWith(month) &&
+          item.category === category
+      )
+
+      .sort(
+        (a,b) =>
+          new Date(b.date) -
+          new Date(a.date)
+      );
+
+
+  document.getElementById(
+    "detailsTitle"
+  ).innerText =
+    icons[category] +
+    " " +
+    category;
+
+
+  const list =
+    document.getElementById(
+      "detailsList"
+    );
+
+
+  const total =
+    items.reduce(
+      (sum,item) =>
+        sum + item.amount,
+      0
+    );
+
+
+  if (items.length === 0) {
+
+    list.innerHTML = `
+
+      <div class="empty">
+
+        No expenses recorded for
+        ${category} this month.
+
+      </div>
+
+    `;
+
+  } else {
+
+    list.innerHTML =
+      items.map(item => `
+
+        <div class="detail-item">
+
+          <div class="detail-top">
+
+            <div>
+
+              <strong>
+                ${item.note === "-"
+                  ? category
+                  : item.note}
+              </strong>
+
+              <div class="detail-date">
+                ${formatDate(item.date)}
+              </div>
+
+            </div>
+
+
+            <div class="detail-amount">
+              - ${money(item.amount)}
+            </div>
+
+          </div>
+
+
+          <button
+            class="delete-small"
+            onclick="deleteExpense(${item.id})">
+
+            Delete
+
+          </button>
+
+        </div>
+
+      `).join("");
+
+  }
+
+
+  document.getElementById(
+    "detailsTotal"
+  ).innerText =
+    "Total: " +
+    money(total);
+
+
+  document.getElementById(
+    "detailsModal"
+  ).style.display =
+    "block";
+
+}
+
+
+/* ==========================================
+   DELETE EXPENSE
+========================================== */
+
+function deleteExpense(
+  id
+) {
+
+  if (
+    !confirm(
+      "Delete this expense?"
+    )
+  ) {
+
+    return;
+
+  }
+
+
+  expenses =
+    expenses.filter(
+      item =>
+        item.id !== id
+    );
+
+
+  localStorage.setItem(
+    "myExpenses",
+    JSON.stringify(expenses)
+  );
+
+
+  closeDetails();
+
+  updateScreen();
+
+}
+
+
+/* ==========================================
+   ADD MODAL
+========================================== */
+
+function openAddExpense() {
+
+  const month =
+    document.getElementById(
+      "monthPicker"
+    ).value;
+
+
+  if (month) {
+
+    const todayMonth =
+      new Date()
+        .toISOString()
+        .slice(0,7);
+
+
+    if (month !== todayMonth) {
+
+      document.getElementById(
+        "expenseDate"
+      ).value =
+        month + "-01";
+
+    } else {
+
+      document.getElementById(
+        "expenseDate"
+      ).value =
+        new Date()
+          .toISOString()
+          .split("T")[0];
+
+    }
+
+  }
+
+
+  document.getElementById(
+    "addModal"
+  ).style.display =
+    "block";
+
+}
+
+
+function closeAddExpense() {
+
+  document.getElementById(
+    "addModal"
+  ).style.display =
+    "none";
+
+}
+
+
+/* ==========================================
+   CLOSE DETAILS
+========================================== */
+
+function closeDetails() {
+
+  document.getElementById(
+    "detailsModal"
+  ).style.display =
+    "none";
+
+}
+
+
+/* ==========================================
+   MONTH CHANGE
+========================================== */
+
+document.getElementById(
+  "monthPicker"
+).addEventListener(
+  "change",
+  function() {
+
+    updateScreen();
+
+  }
+);
+
+
+/* ==========================================
+   CLOSE MODALS BY CLICKING OUTSIDE
+========================================== */
+
+window.addEventListener(
+  "click",
+  function(event) {
+
+    const addModal =
+      document.getElementById(
+        "addModal"
+      );
+
+
+    const detailsModal =
+      document.getElementById(
+        "detailsModal"
+      );
+
+
+    if (
+      event.target === addModal
+    ) {
+
+      closeAddExpense();
+
+    }
+
+
+    if (
+      event.target === detailsModal
+    ) {
+
+      closeDetails();
+
+    }
+
+  }
+);
+
+
+/* ==========================================
+   MONEY
+========================================== */
+
+function money(
+  amount
+) {
+
+  return new Intl.NumberFormat(
+    "en-IN",
+    {
+      style: "currency",
+      currency: "INR",
+      maximumFractionDigits: 0
+    }
+  ).format(amount);
+
+}
+
+
+/* ==========================================
+   DATE
+========================================== */
+
+function formatDate(
+  date
+) {
+
+  return new Date(date)
+    .toLocaleDateString(
+      "en-IN",
+      {
+        day: "2-digit",
+        month: "short",
+        year: "numeric"
+      }
+    );
+
+}
+
+</script>
+
+</body>
+</html> 
