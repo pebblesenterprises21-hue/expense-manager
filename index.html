@@ -855,3 +855,696 @@ function updateScreen() {
 
 
   document
+    .getElementById("balanceDisplay")
+    .innerText =
+      formatMoney(balance);
+
+
+  /*
+     Make negative balance red
+  */
+
+  const balanceElement =
+    document
+      .getElementById("balanceDisplay");
+
+
+  if (balance < 0) {
+
+    balanceElement.style.color =
+      "#dc2626";
+
+  } else {
+
+    balanceElement.style.color =
+      "#4f46e5";
+
+  }
+
+
+  /*
+     Load income into input
+  */
+
+  document
+    .getElementById("incomeInput")
+    .value =
+      income || "";
+
+
+  showCumulativeChart(
+    monthExpenses,
+    income
+  );
+
+
+  showCategorySummary(
+    monthExpenses
+  );
+
+
+  showHistory(
+    monthExpenses
+  );
+
+}
+
+
+/* ==========================================
+   MONTH TITLE
+========================================== */
+
+function updateTitle(month) {
+
+  if (!month) return;
+
+
+  const date =
+    new Date(month + "-01");
+
+
+  document
+    .getElementById("monthTitle")
+    .innerText =
+      date.toLocaleDateString(
+        "en-IN",
+        {
+          month: "long",
+          year: "numeric"
+        }
+      );
+
+}
+
+
+/* ==========================================
+   CUMULATIVE BAR CHART
+========================================== */
+
+function showCumulativeChart(
+  monthExpenses,
+  income
+) {
+
+  const bar =
+    document
+      .getElementById("cumulativeBar");
+
+
+  const legend =
+    document
+      .getElementById("chartLegend");
+
+
+  /*
+     Calculate category totals
+  */
+
+  const totals = {};
+
+
+  categories.forEach(category => {
+
+    totals[category] =
+      monthExpenses
+
+        .filter(
+          item =>
+            item.category === category
+        )
+
+        .reduce(
+          (sum,item) =>
+            sum + item.amount,
+          0
+        );
+
+  });
+
+
+  const totalExpense =
+    Object.values(totals)
+      .reduce(
+        (sum,value) =>
+          sum + value,
+        0
+      );
+
+
+  bar.innerHTML = "";
+
+  legend.innerHTML = "";
+
+
+  /*
+     If there is no income,
+     display expenses proportionally
+  */
+
+  const chartTotal =
+    income > 0
+      ? income
+      : totalExpense;
+
+
+  if (chartTotal <= 0) {
+
+    bar.innerHTML =
+      `<div
+        style="
+          width:100%;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          color:#777;
+        ">
+        No data yet
+      </div>`;
+
+    return;
+
+  }
+
+
+  /*
+     Create cumulative segments
+  */
+
+  categories.forEach(category => {
+
+    const amount =
+      totals[category];
+
+
+    if (amount <= 0) return;
+
+
+    let percentage =
+      (amount / chartTotal) * 100;
+
+
+    /*
+       Don't allow expenses to visually
+       extend beyond the income bar.
+    */
+
+    if (percentage > 100) {
+
+      percentage = 100;
+
+    }
+
+
+    const segment =
+      document.createElement("div");
+
+
+    segment.className =
+      "bar-segment";
+
+
+    segment.style.width =
+      percentage + "%";
+
+
+    segment.style.background =
+      colors[category];
+
+
+    /*
+       Show category name only if
+       there is enough space
+    */
+
+    if (percentage >= 8) {
+
+      segment.innerText =
+        icons[category] +
+        " " +
+        category;
+
+    }
+
+
+    bar.appendChild(segment);
+
+
+    /*
+       Legend
+    */
+
+    const legendItem =
+      document.createElement("div");
+
+
+    legendItem.className =
+      "legend-item";
+
+
+    legendItem.innerHTML = `
+
+      <span
+        class="legend-color"
+        style="
+          background:${colors[category]}
+        ">
+      </span>
+
+      <span>
+        ${icons[category]}
+        ${category} —
+        ${formatMoney(amount)}
+      </span>
+
+    `;
+
+
+    legend.appendChild(
+      legendItem
+    );
+
+  });
+
+
+  /*
+     Remaining balance
+  */
+
+  if (income > totalExpense) {
+
+    const remaining =
+      income - totalExpense;
+
+
+    const percentage =
+      (remaining / income) * 100;
+
+
+    const remainingSegment =
+      document.createElement("div");
+
+
+    remainingSegment.className =
+      "bar-segment remaining";
+
+
+    remainingSegment.style.width =
+      percentage + "%";
+
+
+    if (percentage >= 12) {
+
+      remainingSegment.innerText =
+        "Balance";
+
+    }
+
+
+    bar.appendChild(
+      remainingSegment
+    );
+
+
+    /*
+       Balance legend
+    */
+
+    const balanceLegend =
+      document.createElement("div");
+
+
+    balanceLegend.className =
+      "legend-item";
+
+
+    balanceLegend.innerHTML = `
+
+      <span
+        class="legend-color"
+        style="background:#e5e7eb">
+      </span>
+
+      <span>
+        💰 Balance —
+        ${formatMoney(remaining)}
+      </span>
+
+    `;
+
+
+    legend.appendChild(
+      balanceLegend
+    );
+
+  }
+
+}
+
+
+/* ==========================================
+   CATEGORY SUMMARY
+========================================== */
+
+function showCategorySummary(
+  monthExpenses
+) {
+
+  const container =
+    document
+      .getElementById("categorySummary");
+
+
+  const totals = {};
+
+
+  categories.forEach(category => {
+
+    totals[category] =
+      monthExpenses
+
+        .filter(
+          item =>
+            item.category === category
+        )
+
+        .reduce(
+          (sum,item) =>
+            sum + item.amount,
+          0
+        );
+
+  });
+
+
+  const highest =
+    Math.max(
+      ...Object.values(totals),
+      0
+    );
+
+
+  let html = "";
+
+
+  categories.forEach(category => {
+
+    const amount =
+      totals[category];
+
+
+    let percentage = 0;
+
+
+    if (highest > 0) {
+
+      percentage =
+        (amount / highest) * 100;
+
+    }
+
+
+    html += `
+
+      <div class="category-row">
+
+        <div class="category-top">
+
+          <span class="category-name">
+
+            ${icons[category]}
+            ${category}
+
+          </span>
+
+          <span class="category-value">
+
+            ${formatMoney(amount)}
+
+          </span>
+
+        </div>
+
+
+        <div
+          class="category-progress">
+
+          <div
+            class="category-progress-fill"
+            style="
+              width:${percentage}%;
+              background:${colors[category]};
+            ">
+          </div>
+
+        </div>
+
+      </div>
+
+    `;
+
+  });
+
+
+  container.innerHTML =
+    html;
+
+}
+
+
+/* ==========================================
+   EXPENSE HISTORY
+========================================== */
+
+function showHistory(
+  monthExpenses
+) {
+
+  const list =
+    document
+      .getElementById("expenseList");
+
+
+  if (monthExpenses.length === 0) {
+
+    list.innerHTML =
+      `<div class="empty">
+        No expenses recorded this month.
+      </div>`;
+
+    return;
+
+  }
+
+
+  const sorted =
+    [...monthExpenses]
+      .sort(
+        (a,b) =>
+          new Date(b.date) -
+          new Date(a.date)
+      );
+
+
+  let html = "";
+
+
+  sorted.forEach(item => {
+
+    html += `
+
+      <div class="history-item">
+
+        <div class="history-top">
+
+          <span class="history-category">
+
+            ${icons[item.category]}
+            ${item.category}
+
+          </span>
+
+          <span class="history-amount">
+
+            - ${formatMoney(item.amount)}
+
+          </span>
+
+        </div>
+
+
+        <div class="history-details">
+
+          ${formatDate(item.date)}
+
+          ${
+            item.note !== "-"
+              ? " • " + item.note
+              : ""
+          }
+
+        </div>
+
+
+        <button
+          class="delete-button"
+          onclick="deleteExpense(${item.id})">
+
+          Delete
+
+        </button>
+
+      </div>
+
+    `;
+
+  });
+
+
+  list.innerHTML =
+    html;
+
+}
+
+
+/* ==========================================
+   DELETE EXPENSE
+========================================== */
+
+function deleteExpense(id) {
+
+  if (
+    !confirm(
+      "Delete this expense?"
+    )
+  ) {
+
+    return;
+
+  }
+
+
+  expenses =
+    expenses.filter(
+      item =>
+        item.id !== id
+    );
+
+
+  saveData();
+
+  updateScreen();
+
+}
+
+
+/* ==========================================
+   CLEAR ALL
+========================================== */
+
+function clearAllExpenses() {
+
+  if (
+    !confirm(
+      "Delete ALL expense and income data?"
+    )
+  ) {
+
+    return;
+
+  }
+
+
+  expenses = [];
+
+  incomes = {};
+
+
+  localStorage.removeItem(
+    "myExpenses"
+  );
+
+
+  localStorage.removeItem(
+    "myIncomes"
+  );
+
+
+  updateScreen();
+
+}
+
+
+/* ==========================================
+   MONTH CHANGE
+========================================== */
+
+document
+  .getElementById("monthPicker")
+  .addEventListener(
+    "change",
+    function() {
+
+      const month =
+        this.value;
+
+
+      /*
+         Set expense date to selected month
+      */
+
+      if (month) {
+
+        document
+          .getElementById("expenseDate")
+          .value =
+            month + "-01";
+
+      }
+
+
+      updateScreen();
+
+    }
+  );
+
+
+/* ==========================================
+   MONEY
+========================================== */
+
+function formatMoney(amount) {
+
+  return new Intl.NumberFormat(
+    "en-IN",
+    {
+      style: "currency",
+      currency: "INR",
+      maximumFractionDigits: 0
+    }
+  ).format(amount);
+
+}
+
+
+/* ==========================================
+   DATE
+========================================== */
+
+function formatDate(date) {
+
+  return new Date(date)
+    .toLocaleDateString(
+      "en-IN",
+      {
+        day: "2-digit",
+        month: "short",
+        year: "numeric"
+      }
+    );
+
+}
+
+</script>
+
+</body>
+</html>
