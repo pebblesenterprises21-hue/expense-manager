@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>My Monthly Expenses</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f5f6fa;
+  color: #222;
+}
+
+header {
+  background: #4f46e5;
+  color: white;
+  padding: 22px 15px;
+  text-align: center;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 25px;
+}
+
+header p {
+  margin: 8px 0 0;
+}
+
+.container {
+  max-width: 650px;
+  margin: auto;
+  padding: 15px;
+}
+
+/* TOTAL */
+
+.total-card {
+  background: white;
+  padding: 22px;
+  margin: 15px 0;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+}
+
+.total-card small {
+  color: #666;
+}
+
+.total-card h2 {
+  margin: 8px 0 0;
+  font-size: 32px;
+  color: #4f46e5;
+}
+
+/* ADD EXPENSE */
+
+.box {
+  background: white;
+  padding: 18px;
+  margin-bottom: 15px;
+  border-radius: 16px;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+}
+
+.box h2 {
+  margin-top: 0;
+  font-size: 20px;
+}
+
+label {
+  display: block;
+  margin-top: 12px;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 13px;
+  border: 1px solid #ddd;
+  border-radius: 9px;
+  font-size: 16px;
+  background: white;
+}
+
+button {
+  width: 100%;
+  padding: 14px;
+  margin-top: 15px;
+  border: none;
+  border-radius: 10px;
+  background: #4f46e5;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* CATEGORY SUMMARY */
+
+.category-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 13px 5px;
+  border-bottom: 1px solid #eee;
+}
+
+.category-name {
+  font-weight: bold;
+}
+
+.category-amount {
+  font-weight: bold;
+  color: #dc2626;
+}
+
+/* EXPENSE HISTORY */
+
+.expense {
+  border-bottom: 1px solid #eee;
+  padding: 14px 0;
+}
+
+.expense-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.expense-category {
+  font-weight: bold;
+}
+
+.expense-amount {
+  color: #dc2626;
+  font-weight: bold;
+}
+
+.expense-details {
+  color: #777;
+  font-size: 13px;
+  margin-top: 5px;
+}
+
+.delete-btn {
+  width: auto;
+  padding: 6px 10px;
+  margin-top: 8px;
+  background: #fee2e2;
+  color: #dc2626;
+  font-size: 12px;
+}
+
+.empty {
+  text-align: center;
+  padding: 20px;
+  color: #888;
+}
+
+/* MONTH */
+
+.month-selector {
+  display: flex;
+  gap: 8px;
+}
+
+.month-selector button {
+  margin: 0;
+  width: 50px;
+  padding: 10px;
+}
+
+.month-selector input {
+  flex: 1;
+}
+
+/* CLEAR */
+
+.clear-btn {
+  background: #dc2626;
+  margin-bottom: 30px;
+}
+
+@media (max-width: 500px) {
+
+  header h1 {
+    font-size: 22px;
+  }
+
+  .total-card h2 {
+    font-size: 28px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>💰 My Monthly Expenses</h1>
+  <p id="monthTitle"></p>
+</header>
+
+<div class="container">
+
+  <!-- MONTH -->
+
+  <div class="box">
+
+    <h2>📅 Select Month</h2>
+
+    <input type="month" id="monthPicker">
+
+  </div>
+
+
+  <!-- TOTAL -->
+
+  <div class="total-card">
+
+    <small>Total Expenses</small>
+
+    <h2 id="totalAmount">₹0</h2>
+
+  </div>
+
+
+  <!-- ADD EXPENSE -->
+
+  <div class="box">
+
+    <h2>➕ Add Expense</h2>
+
+    <label>Date</label>
+
+    <input type="date" id="expenseDate">
+
+
+    <label>Category</label>
+
+    <select id="category">
+
+      <option value="Grocery">🛒 Grocery</option>
+
+      <option value="Vegetable">🥬 Vegetable</option>
+
+      <option value="Fruits">🍎 Fruits</option>
+
+      <option value="Milk">🥛 Milk</option>
+
+      <option value="Non-Veg">🍗 Non-Veg</option>
+
+      <option value="Snacks">🍪 Snacks</option>
+
+      <option value="Cable">📺 Cable</option>
+
+      <option value="Gas">🔥 Gas</option>
+
+      <option value="Others">📦 Others</option>
+
+    </select>
+
+
+    <label>Amount</label>
+
+    <input
+      type="number"
+      id="amount"
+      placeholder="Enter amount"
+      min="1"
+    >
+
+
+    <label>Note</label>
+
+    <input
+      type="text"
+      id="note"
+      placeholder="Example: Vegetables, milk, snacks..."
+    >
+
+
+    <button onclick="addExpense()">
+      💾 Save Expense
+    </button>
+
+  </div>
+
+
+  <!-- CATEGORY SUMMARY -->
+
+  <div class="box">
+
+    <h2>📊 This Month</h2>
+
+    <div id="categorySummary"></div>
+
+  </div>
+
+
+  <!-- EXPENSE HISTORY -->
+
+  <div class="box">
+
+    <h2>📋 Expense History</h2>
+
+    <div id="expenseList"></div>
+
+  </div>
+
+
+  <!-- CLEAR -->
+
+  <button
+    class="clear-btn"
+    onclick="clearAllExpenses()"
+  >
+    🗑 Delete All Expenses
+  </button>
+
+</div>
+
+
+<script>
+
+/* =====================================
+   DATA
+===================================== */
+
+let expenses =
+  JSON.parse(localStorage.getItem("myExpenses")) || [];
+
+
+/* =====================================
+   CATEGORIES
+===================================== */
+
+const categories = [
+
+  "Grocery",
+  "Vegetable",
+  "Fruits",
+  "Milk",
+  "Non-Veg",
+  "Snacks",
+  "Cable",
+  "Gas",
+  "Others"
+
+];
+
+
+/* =====================================
+   TODAY
+===================================== */
+
+const today = new Date();
+
+const todayString =
+  today.toISOString().split("T")[0];
+
+document.getElementById("expenseDate").value =
+  todayString;
+
+
+/* =====================================
+   CURRENT MONTH
+===================================== */
+
+const currentMonth =
+  today.toISOString().slice(0,7);
+
+document.getElementById("monthPicker").value =
+  currentMonth;
+
+updateScreen();
+
+
+/* =====================================
+   ADD EXPENSE
+===================================== */
+
+function addExpense() {
+
+  const date =
+    document.getElementById("expenseDate").value;
+
+  const category =
+    document.getElementById("category").value;
+
+  const amount =
+    Number(document.getElementById("amount").value);
+
+  const note =
+    document.getElementById("note").value.trim();
+
+
+  if (!date) {
+
+    alert("Please select a date.");
+
+    return;
+
+  }
+
+
+  if (!amount || amount <= 0) {
+
+    alert("Please enter a valid amount.");
+
+    return;
+
+  }
+
+
+  const expense = {
+
+    id: Date.now(),
+
+    date: date,
+
+    category: category,
+
+    amount: amount,
+
+    note: note || "-"
+
+  };
+
+
+  expenses.push(expense);
+
+
+  saveData();
+
+
+  document.getElementById("amount").value = "";
+
+  document.getElementById("note").value = "";
+
+
+  updateScreen();
+
+}
+
+
+/* =====================================
+   SAVE DATA
+===================================== */
+
+function saveData() {
+
+  localStorage.setItem(
+    "myExpenses",
+    JSON.stringify(expenses)
+  );
+
+}
+
+
+/* =====================================
+   UPDATE SCREEN
+===================================== */
+
+function updateScreen() {
+
+  const selectedMonth =
+    document.getElementById("monthPicker").value;
+
+
+  const monthExpenses =
+    expenses.filter(item =>
+      item.date.startsWith(selectedMonth)
+    );
+
+
+  let total = 0;
+
+
+  monthExpenses.forEach(item => {
+
+    total += item.amount;
+
+  });
+
+
+  document.getElementById("totalAmount").innerText =
+    formatMoney(total);
+
+
+  updateMonthTitle(selectedMonth);
+
+  showCategorySummary(monthExpenses);
+
+  showExpenseHistory(monthExpenses);
+
+}
+
+
+/* =====================================
+   MONTH TITLE
+===================================== */
+
+function updateMonthTitle(month) {
+
+  if (!month) return;
+
+
+  const date =
+    new Date(month + "-01");
+
+
+  const title =
+    date.toLocaleDateString(
+      "en-IN",
+      {
+        month: "long",
+        year: "numeric"
+      }
+    );
+
+
+  document.getElementById("monthTitle").innerText =
+    title;
+
+}
+
+
+/* =====================================
+   CATEGORY SUMMARY
+===================================== */
+
+function showCategorySummary(monthExpenses) {
+
+  const summary =
+    document.getElementById("categorySummary");
+
+
+  let html = "";
+
+
+  categories.forEach(category => {
+
+    const categoryTotal =
+      monthExpenses
+
+        .filter(item =>
+          item.category === category
+        )
+
+        .reduce(
+          (sum, item) =>
+            sum + item.amount,
+          0
+        );
+
+
+    html += `
+
+      <div class="category-row">
+
+        <span class="category-name">
+          ${getIcon(category)} ${category}
+        </span>
+
+        <span class="category-amount">
+          ${formatMoney(categoryTotal)}
+        </span>
+
+      </div>
+
+    `;
+
+  });
+
+
+  summary.innerHTML = html;
+
+}
+
+
+/* =====================================
+   EXPENSE HISTORY
+===================================== */
+
+function showExpenseHistory(monthExpenses) {
+
+  const list =
+    document.getElementById("expenseList");
+
+
+  if (monthExpenses.length === 0) {
+
+    list.innerHTML =
+
+      `<div class="empty">
+        No expenses recorded for this month.
+      </div>`;
+
+    return;
+
+  }
+
+
+  const sorted =
+    [...monthExpenses].sort(
+      (a,b) =>
+        new Date(b.date) -
+        new Date(a.date)
+    );
+
+
+  let html = "";
+
+
+  sorted.forEach(item => {
+
+    html += `
+
+      <div class="expense">
+
+        <div class="expense-top">
+
+          <span class="expense-category">
+            ${getIcon(item.category)}
+            ${item.category}
+          </span>
+
+          <span class="expense-amount">
+            - ${formatMoney(item.amount)}
+          </span>
+
+        </div>
+
+
+        <div class="expense-details">
+
+          ${formatDate(item.date)}
+
+          ${item.note !== "-"
+            ? " • " + item.note
+            : ""}
+
+        </div>
+
+
+        <button
+          class="delete-btn"
+          onclick="deleteExpense(${item.id})"
+        >
+          Delete
+        </button>
+
+      </div>
+
+    `;
+
+  });
+
+
+  list.innerHTML = html;
+
+}
+
+
+/* =====================================
+   DELETE EXPENSE
+===================================== */
+
+function deleteExpense(id) {
+
+  if (!confirm("Delete this expense?")) {
+
+    return;
+
+  }
+
+
+  expenses =
+    expenses.filter(
+      item => item.id !== id
+    );
+
+
+  saveData();
+
+  updateScreen();
+
+}
+
+
+/* =====================================
+   CLEAR ALL
+===================================== */
+
+function clearAllExpenses() {
+
+  if (
+    !confirm(
+      "Delete ALL your expenses? This cannot be undone."
+    )
+  ) {
+
+    return;
+
+  }
+
+
+  expenses = [];
+
+  saveData();
+
+  updateScreen();
+
+}
+
+
+/* =====================================
+   MONTH CHANGE
+===================================== */
+
+document
+  .getElementById("monthPicker")
+  .addEventListener(
+    "change",
+    updateScreen
+  );
+
+
+/* =====================================
+   MONEY FORMAT
+===================================== */
+
+function formatMoney(amount) {
+
+  return new Intl.NumberFormat(
+    "en-IN",
+    {
+      style: "currency",
+      currency: "INR",
+      maximumFractionDigits: 0
+    }
+  ).format(amount);
+
+}
+
+
+/* =====================================
+   DATE FORMAT
+===================================== */
+
+function formatDate(date) {
+
+  return new Date(date)
+    .toLocaleDateString(
+      "en-IN",
+      {
+        day: "2-digit",
+        month: "short",
+        year: "numeric"
+      }
+    );
+
+}
+
+
+/* =====================================
+   CATEGORY ICON
+===================================== */
+
+function getIcon(category) {
+
+  const icons = {
+
+    "Grocery": "🛒",
+
+    "Vegetable": "🥬",
+
+    "Fruits": "🍎",
+
+    "Milk": "🥛",
+
+    "Non-Veg": "🍗",
+
+    "Snacks": "🍪",
+
+    "Cable": "📺",
+
+    "Gas": "🔥",
+
+    "Others": "📦"
+
+  };
+
+
+  return icons[category] || "📦";
+
+}
+
+</script>
+
+</body>
+</html>
