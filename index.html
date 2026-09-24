@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>My Monthly Expenses</title>
+<title>My Monthly Expense Manager</title>
 
 <style>
 * {
@@ -14,67 +14,99 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: #f5f6fa;
+  background: #f4f6fb;
   color: #222;
 }
 
 header {
   background: #4f46e5;
   color: white;
-  padding: 22px 15px;
   text-align: center;
+  padding: 22px 15px;
 }
 
 header h1 {
   margin: 0;
-  font-size: 25px;
+  font-size: 24px;
 }
 
 header p {
-  margin: 8px 0 0;
+  margin: 7px 0 0;
 }
 
 .container {
-  max-width: 650px;
+  max-width: 700px;
   margin: auto;
   padding: 15px;
 }
-
-/* TOTAL */
-
-.total-card {
-  background: white;
-  padding: 22px;
-  margin: 15px 0;
-  border-radius: 16px;
-  text-align: center;
-  box-shadow: 0 3px 12px rgba(0,0,0,0.08);
-}
-
-.total-card small {
-  color: #666;
-}
-
-.total-card h2 {
-  margin: 8px 0 0;
-  font-size: 32px;
-  color: #4f46e5;
-}
-
-/* ADD EXPENSE */
 
 .box {
   background: white;
   padding: 18px;
   margin-bottom: 15px;
   border-radius: 16px;
-  box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+  box-shadow: 0 3px 12px rgba(0,0,0,.07);
 }
 
 .box h2 {
   margin-top: 0;
-  font-size: 20px;
+  font-size: 19px;
 }
+
+/* MONTH */
+
+input,
+select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 9px;
+  font-size: 16px;
+  background: white;
+}
+
+/* SUMMARY */
+
+.summary-cards {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.summary-card {
+  background: white;
+  border-radius: 14px;
+  padding: 15px 8px;
+  text-align: center;
+  box-shadow: 0 3px 12px rgba(0,0,0,.07);
+}
+
+.summary-card small {
+  display: block;
+  color: #777;
+  font-size: 12px;
+}
+
+.summary-card strong {
+  display: block;
+  margin-top: 7px;
+  font-size: 19px;
+}
+
+.income {
+  color: #16a34a;
+}
+
+.expense {
+  color: #dc2626;
+}
+
+.balance {
+  color: #4f46e5;
+}
+
+/* FORM */
 
 label {
   display: block;
@@ -83,75 +115,133 @@ label {
   font-weight: bold;
 }
 
-input,
-select {
-  width: 100%;
-  padding: 13px;
-  border: 1px solid #ddd;
-  border-radius: 9px;
-  font-size: 16px;
-  background: white;
-}
-
 button {
   width: 100%;
-  padding: 14px;
+  padding: 13px;
   margin-top: 15px;
   border: none;
-  border-radius: 10px;
+  border-radius: 9px;
   background: #4f46e5;
   color: white;
   font-size: 16px;
   font-weight: bold;
+  cursor: pointer;
 }
 
-/* CATEGORY SUMMARY */
+/* CUMULATIVE BAR */
+
+.cumulative-bar {
+  width: 100%;
+  height: 45px;
+  display: flex;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #eee;
+  margin: 18px 0 10px;
+}
+
+.bar-segment {
+  height: 100%;
+  min-width: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 11px;
+  font-weight: bold;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.remaining {
+  background: #e5e7eb;
+  color: #555;
+}
+
+/* LEGEND */
+
+.legend {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 15px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+}
+
+.legend-color {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+/* CATEGORY LIST */
 
 .category-row {
+  margin-bottom: 15px;
+}
+
+.category-top {
   display: flex;
   justify-content: space-between;
-  padding: 13px 5px;
-  border-bottom: 1px solid #eee;
+  margin-bottom: 5px;
 }
 
 .category-name {
   font-weight: bold;
 }
 
-.category-amount {
+.category-value {
   font-weight: bold;
-  color: #dc2626;
 }
 
-/* EXPENSE HISTORY */
+.category-progress {
+  height: 9px;
+  background: #eee;
+  border-radius: 10px;
+  overflow: hidden;
+}
 
-.expense {
-  border-bottom: 1px solid #eee;
+.category-progress-fill {
+  height: 100%;
+  border-radius: 10px;
+}
+
+/* HISTORY */
+
+.history-item {
   padding: 14px 0;
+  border-bottom: 1px solid #eee;
 }
 
-.expense-top {
+.history-top {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  gap: 10px;
 }
 
-.expense-category {
+.history-category {
   font-weight: bold;
 }
 
-.expense-amount {
+.history-amount {
   color: #dc2626;
   font-weight: bold;
 }
 
-.expense-details {
+.history-details {
   color: #777;
   font-size: 13px;
   margin-top: 5px;
 }
 
-.delete-btn {
+.delete-button {
   width: auto;
   padding: 6px 10px;
   margin-top: 8px;
@@ -160,44 +250,35 @@ button {
   font-size: 12px;
 }
 
+.clear-button {
+  background: #dc2626;
+  margin-bottom: 30px;
+}
+
 .empty {
   text-align: center;
   padding: 20px;
   color: #888;
 }
 
-/* MONTH */
+/* MOBILE */
 
-.month-selector {
-  display: flex;
-  gap: 8px;
-}
+@media(max-width:600px) {
 
-.month-selector button {
-  margin: 0;
-  width: 50px;
-  padding: 10px;
-}
-
-.month-selector input {
-  flex: 1;
-}
-
-/* CLEAR */
-
-.clear-btn {
-  background: #dc2626;
-  margin-bottom: 30px;
-}
-
-@media (max-width: 500px) {
-
-  header h1 {
-    font-size: 22px;
+  .summary-cards {
+    grid-template-columns: 1fr;
   }
 
-  .total-card h2 {
-    font-size: 28px;
+  .summary-card strong {
+    font-size: 21px;
+  }
+
+  .legend {
+    grid-template-columns: 1fr;
+  }
+
+  .bar-segment {
+    font-size: 9px;
   }
 }
 </style>
@@ -206,143 +287,263 @@ button {
 <body>
 
 <header>
+
   <h1>💰 My Monthly Expenses</h1>
+
   <p id="monthTitle"></p>
+
 </header>
+
 
 <div class="container">
 
-  <!-- MONTH -->
 
-  <div class="box">
+<!-- MONTH -->
 
-    <h2>📅 Select Month</h2>
+<div class="box">
 
-    <input type="month" id="monthPicker">
+  <h2>📅 Select Month</h2>
+
+  <input
+    type="month"
+    id="monthPicker"
+  >
+
+</div>
+
+
+<!-- SUMMARY -->
+
+<div class="summary-cards">
+
+  <div class="summary-card">
+
+    <small>Monthly Income</small>
+
+    <strong
+      class="income"
+      id="incomeDisplay">
+      ₹0
+    </strong>
 
   </div>
 
 
-  <!-- TOTAL -->
-
-  <div class="total-card">
+  <div class="summary-card">
 
     <small>Total Expenses</small>
 
-    <h2 id="totalAmount">₹0</h2>
+    <strong
+      class="expense"
+      id="expenseDisplay">
+      ₹0
+    </strong>
 
   </div>
 
 
-  <!-- ADD EXPENSE -->
+  <div class="summary-card">
 
-  <div class="box">
+    <small>Balance</small>
 
-    <h2>➕ Add Expense</h2>
-
-    <label>Date</label>
-
-    <input type="date" id="expenseDate">
-
-
-    <label>Category</label>
-
-    <select id="category">
-
-      <option value="Grocery">🛒 Grocery</option>
-
-      <option value="Vegetable">🥬 Vegetable</option>
-
-      <option value="Fruits">🍎 Fruits</option>
-
-      <option value="Milk">🥛 Milk</option>
-
-      <option value="Non-Veg">🍗 Non-Veg</option>
-
-      <option value="Snacks">🍪 Snacks</option>
-
-      <option value="Cable">📺 Cable</option>
-
-      <option value="Gas">🔥 Gas</option>
-
-      <option value="Others">📦 Others</option>
-
-    </select>
-
-
-    <label>Amount</label>
-
-    <input
-      type="number"
-      id="amount"
-      placeholder="Enter amount"
-      min="1"
-    >
-
-
-    <label>Note</label>
-
-    <input
-      type="text"
-      id="note"
-      placeholder="Example: Vegetables, milk, snacks..."
-    >
-
-
-    <button onclick="addExpense()">
-      💾 Save Expense
-    </button>
+    <strong
+      class="balance"
+      id="balanceDisplay">
+      ₹0
+    </strong>
 
   </div>
 
-
-  <!-- CATEGORY SUMMARY -->
-
-  <div class="box">
-
-    <h2>📊 This Month</h2>
-
-    <div id="categorySummary"></div>
-
-  </div>
+</div>
 
 
-  <!-- EXPENSE HISTORY -->
+<!-- INCOME -->
 
-  <div class="box">
+<div class="box">
 
-    <h2>📋 Expense History</h2>
+  <h2>💰 Monthly Income</h2>
 
-    <div id="expenseList"></div>
+  <label>Income for this month</label>
 
-  </div>
-
-
-  <!-- CLEAR -->
-
-  <button
-    class="clear-btn"
-    onclick="clearAllExpenses()"
+  <input
+    type="number"
+    id="incomeInput"
+    placeholder="Example: 50000"
+    min="0"
   >
-    🗑 Delete All Expenses
+
+  <button onclick="saveIncome()">
+    Save Income
   </button>
+
+</div>
+
+
+<!-- ADD EXPENSE -->
+
+<div class="box">
+
+  <h2>➕ Add Expense</h2>
+
+  <label>Date</label>
+
+  <input
+    type="date"
+    id="expenseDate"
+  >
+
+
+  <label>Category</label>
+
+  <select id="category">
+
+    <option value="Grocery">
+      🛒 Grocery
+    </option>
+
+    <option value="Vegetable">
+      🥬 Vegetable
+    </option>
+
+    <option value="Fruits">
+      🍎 Fruits
+    </option>
+
+    <option value="Milk">
+      🥛 Milk
+    </option>
+
+    <option value="Non-Veg">
+      🍗 Non-Veg
+    </option>
+
+    <option value="Snacks">
+      🍪 Snacks
+    </option>
+
+    <option value="Cable">
+      📺 Cable
+    </option>
+
+    <option value="Gas">
+      🔥 Gas
+    </option>
+
+    <option value="Others">
+      📦 Others
+    </option>
+
+  </select>
+
+
+  <label>Amount</label>
+
+  <input
+    type="number"
+    id="amount"
+    placeholder="Enter amount"
+    min="1"
+  >
+
+
+  <label>Note</label>
+
+  <input
+    type="text"
+    id="note"
+    placeholder="Example: Rice, milk, fruits..."
+  >
+
+
+  <button onclick="addExpense()">
+    💾 Save Expense
+  </button>
+
+</div>
+
+
+<!-- CUMULATIVE CHART -->
+
+<div class="box">
+
+  <h2>📊 Monthly Expense Distribution</h2>
+
+  <p style="color:#777;font-size:13px;">
+    Expenses accumulate from left to right. The grey section is your remaining balance.
+  </p>
+
+
+  <div
+    class="cumulative-bar"
+    id="cumulativeBar">
+  </div>
+
+
+  <div
+    class="legend"
+    id="chartLegend">
+  </div>
+
+</div>
+
+
+<!-- CATEGORY TOTALS -->
+
+<div class="box">
+
+  <h2>📋 Category-wise Expenses</h2>
+
+  <div id="categorySummary"></div>
+
+</div>
+
+
+<!-- HISTORY -->
+
+<div class="box">
+
+  <h2>🧾 Expense History</h2>
+
+  <div id="expenseList"></div>
+
+</div>
+
+
+<!-- CLEAR -->
+
+<button
+  class="clear-button"
+  onclick="clearAllExpenses()">
+
+  🗑 Delete All Expense Data
+
+</button>
+
 
 </div>
 
 
 <script>
 
-/* =====================================
+/* ==========================================
    DATA
-===================================== */
+========================================== */
 
 let expenses =
-  JSON.parse(localStorage.getItem("myExpenses")) || [];
+  JSON.parse(
+    localStorage.getItem("myExpenses")
+  ) || [];
 
 
-/* =====================================
+let incomes =
+  JSON.parse(
+    localStorage.getItem("myIncomes")
+  ) || {};
+
+
+/* ==========================================
    CATEGORIES
-===================================== */
+========================================== */
 
 const categories = [
 
@@ -359,49 +560,180 @@ const categories = [
 ];
 
 
-/* =====================================
-   TODAY
-===================================== */
+/* ==========================================
+   COLORS
+========================================== */
 
-const today = new Date();
+const colors = {
+
+  "Grocery": "#4f46e5",
+
+  "Vegetable": "#16a34a",
+
+  "Fruits": "#f59e0b",
+
+  "Milk": "#06b6d4",
+
+  "Non-Veg": "#dc2626",
+
+  "Snacks": "#db2777",
+
+  "Cable": "#7c3aed",
+
+  "Gas": "#ea580c",
+
+  "Others": "#64748b"
+
+};
+
+
+/* ==========================================
+   ICONS
+========================================== */
+
+const icons = {
+
+  "Grocery": "🛒",
+
+  "Vegetable": "🥬",
+
+  "Fruits": "🍎",
+
+  "Milk": "🥛",
+
+  "Non-Veg": "🍗",
+
+  "Snacks": "🍪",
+
+  "Cable": "📺",
+
+  "Gas": "🔥",
+
+  "Others": "📦"
+
+};
+
+
+/* ==========================================
+   CURRENT DATE
+========================================== */
+
+const today =
+  new Date();
+
 
 const todayString =
-  today.toISOString().split("T")[0];
-
-document.getElementById("expenseDate").value =
-  todayString;
+  today.toISOString()
+  .split("T")[0];
 
 
-/* =====================================
+document
+  .getElementById("expenseDate")
+  .value = todayString;
+
+
+/* ==========================================
    CURRENT MONTH
-===================================== */
+========================================== */
 
 const currentMonth =
-  today.toISOString().slice(0,7);
+  today.toISOString()
+  .slice(0,7);
 
-document.getElementById("monthPicker").value =
-  currentMonth;
+
+document
+  .getElementById("monthPicker")
+  .value = currentMonth;
+
 
 updateScreen();
 
 
-/* =====================================
+/* ==========================================
+   SAVE INCOME
+========================================== */
+
+function saveIncome() {
+
+  const month =
+    document
+      .getElementById("monthPicker")
+      .value;
+
+
+  const amount =
+    Number(
+      document
+        .getElementById("incomeInput")
+        .value
+    );
+
+
+  if (!month) {
+
+    alert("Please select a month.");
+
+    return;
+
+  }
+
+
+  if (amount < 0 || isNaN(amount)) {
+
+    alert("Please enter a valid income.");
+
+    return;
+
+  }
+
+
+  incomes[month] = amount;
+
+
+  localStorage.setItem(
+    "myIncomes",
+    JSON.stringify(incomes)
+  );
+
+
+  updateScreen();
+
+
+  alert("Monthly income saved.");
+}
+
+
+/* ==========================================
    ADD EXPENSE
-===================================== */
+========================================== */
 
 function addExpense() {
 
   const date =
-    document.getElementById("expenseDate").value;
+    document
+      .getElementById("expenseDate")
+      .value;
+
 
   const category =
-    document.getElementById("category").value;
+    document
+      .getElementById("category")
+      .value;
+
 
   const amount =
-    Number(document.getElementById("amount").value);
+    Number(
+      document
+        .getElementById("amount")
+        .value
+    );
+
 
   const note =
-    document.getElementById("note").value.trim();
+    document
+      .getElementById("note")
+      .value
+      .trim();
 
 
   if (!date) {
@@ -443,9 +775,14 @@ function addExpense() {
   saveData();
 
 
-  document.getElementById("amount").value = "";
+  document
+    .getElementById("amount")
+    .value = "";
 
-  document.getElementById("note").value = "";
+
+  document
+    .getElementById("note")
+    .value = "";
 
 
   updateScreen();
@@ -453,9 +790,9 @@ function addExpense() {
 }
 
 
-/* =====================================
-   SAVE DATA
-===================================== */
+/* ==========================================
+   SAVE EXPENSE DATA
+========================================== */
 
 function saveData() {
 
@@ -467,346 +804,54 @@ function saveData() {
 }
 
 
-/* =====================================
-   UPDATE SCREEN
-===================================== */
+/* ==========================================
+   UPDATE EVERYTHING
+========================================== */
 
 function updateScreen() {
 
-  const selectedMonth =
-    document.getElementById("monthPicker").value;
+  const month =
+    document
+      .getElementById("monthPicker")
+      .value;
+
+
+  updateTitle(month);
 
 
   const monthExpenses =
-    expenses.filter(item =>
-      item.date.startsWith(selectedMonth)
-    );
-
-
-  let total = 0;
-
-
-  monthExpenses.forEach(item => {
-
-    total += item.amount;
-
-  });
-
-
-  document.getElementById("totalAmount").innerText =
-    formatMoney(total);
-
-
-  updateMonthTitle(selectedMonth);
-
-  showCategorySummary(monthExpenses);
-
-  showExpenseHistory(monthExpenses);
-
-}
-
-
-/* =====================================
-   MONTH TITLE
-===================================== */
-
-function updateMonthTitle(month) {
-
-  if (!month) return;
-
-
-  const date =
-    new Date(month + "-01");
-
-
-  const title =
-    date.toLocaleDateString(
-      "en-IN",
-      {
-        month: "long",
-        year: "numeric"
-      }
-    );
-
-
-  document.getElementById("monthTitle").innerText =
-    title;
-
-}
-
-
-/* =====================================
-   CATEGORY SUMMARY
-===================================== */
-
-function showCategorySummary(monthExpenses) {
-
-  const summary =
-    document.getElementById("categorySummary");
-
-
-  let html = "";
-
-
-  categories.forEach(category => {
-
-    const categoryTotal =
-      monthExpenses
-
-        .filter(item =>
-          item.category === category
-        )
-
-        .reduce(
-          (sum, item) =>
-            sum + item.amount,
-          0
-        );
-
-
-    html += `
-
-      <div class="category-row">
-
-        <span class="category-name">
-          ${getIcon(category)} ${category}
-        </span>
-
-        <span class="category-amount">
-          ${formatMoney(categoryTotal)}
-        </span>
-
-      </div>
-
-    `;
-
-  });
-
-
-  summary.innerHTML = html;
-
-}
-
-
-/* =====================================
-   EXPENSE HISTORY
-===================================== */
-
-function showExpenseHistory(monthExpenses) {
-
-  const list =
-    document.getElementById("expenseList");
-
-
-  if (monthExpenses.length === 0) {
-
-    list.innerHTML =
-
-      `<div class="empty">
-        No expenses recorded for this month.
-      </div>`;
-
-    return;
-
-  }
-
-
-  const sorted =
-    [...monthExpenses].sort(
-      (a,b) =>
-        new Date(b.date) -
-        new Date(a.date)
-    );
-
-
-  let html = "";
-
-
-  sorted.forEach(item => {
-
-    html += `
-
-      <div class="expense">
-
-        <div class="expense-top">
-
-          <span class="expense-category">
-            ${getIcon(item.category)}
-            ${item.category}
-          </span>
-
-          <span class="expense-amount">
-            - ${formatMoney(item.amount)}
-          </span>
-
-        </div>
-
-
-        <div class="expense-details">
-
-          ${formatDate(item.date)}
-
-          ${item.note !== "-"
-            ? " • " + item.note
-            : ""}
-
-        </div>
-
-
-        <button
-          class="delete-btn"
-          onclick="deleteExpense(${item.id})"
-        >
-          Delete
-        </button>
-
-      </div>
-
-    `;
-
-  });
-
-
-  list.innerHTML = html;
-
-}
-
-
-/* =====================================
-   DELETE EXPENSE
-===================================== */
-
-function deleteExpense(id) {
-
-  if (!confirm("Delete this expense?")) {
-
-    return;
-
-  }
-
-
-  expenses =
     expenses.filter(
-      item => item.id !== id
+      item =>
+        item.date.startsWith(month)
     );
 
 
-  saveData();
-
-  updateScreen();
-
-}
-
-
-/* =====================================
-   CLEAR ALL
-===================================== */
-
-function clearAllExpenses() {
-
-  if (
-    !confirm(
-      "Delete ALL your expenses? This cannot be undone."
-    )
-  ) {
-
-    return;
-
-  }
-
-
-  expenses = [];
-
-  saveData();
-
-  updateScreen();
-
-}
-
-
-/* =====================================
-   MONTH CHANGE
-===================================== */
-
-document
-  .getElementById("monthPicker")
-  .addEventListener(
-    "change",
-    updateScreen
-  );
-
-
-/* =====================================
-   MONEY FORMAT
-===================================== */
-
-function formatMoney(amount) {
-
-  return new Intl.NumberFormat(
-    "en-IN",
-    {
-      style: "currency",
-      currency: "INR",
-      maximumFractionDigits: 0
-    }
-  ).format(amount);
-
-}
-
-
-/* =====================================
-   DATE FORMAT
-===================================== */
-
-function formatDate(date) {
-
-  return new Date(date)
-    .toLocaleDateString(
-      "en-IN",
-      {
-        day: "2-digit",
-        month: "short",
-        year: "numeric"
-      }
+  const totalExpenses =
+    monthExpenses.reduce(
+      (sum,item) =>
+        sum + item.amount,
+      0
     );
 
-}
+
+  const income =
+    Number(incomes[month] || 0);
 
 
-/* =====================================
-   CATEGORY ICON
-===================================== */
-
-function getIcon(category) {
-
-  const icons = {
-
-    "Grocery": "🛒",
-
-    "Vegetable": "🥬",
-
-    "Fruits": "🍎",
-
-    "Milk": "🥛",
-
-    "Non-Veg": "🍗",
-
-    "Snacks": "🍪",
-
-    "Cable": "📺",
-
-    "Gas": "🔥",
-
-    "Others": "📦"
-
-  };
+  const balance =
+    income - totalExpenses;
 
 
-  return icons[category] || "📦";
+  document
+    .getElementById("incomeDisplay")
+    .innerText =
+      formatMoney(income);
 
-}
 
-</script>
+  document
+    .getElementById("expenseDisplay")
+    .innerText =
+      formatMoney(totalExpenses);
 
-</body>
-</html>
+
+  document
